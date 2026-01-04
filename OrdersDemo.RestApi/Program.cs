@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using OrdersDemo.Application.Interfaces;
 using OrdersDemo.Application.UseCases;
+using OrdersDemo.Domain.Interfaces;
+using OrdersDemo.Infrastructure;
 using OrdersDemo.Infrastructure.Persistence;
+using OrdersDemo.Infrastructure.Repositories;
 using OrdersDemo.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +17,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<GetPagedOrdersUseCase>();
+builder.Services.AddScoped<DeleteOrderUseCase>();
+builder.Services.AddScoped<SaveOrderUseCase>();
 
 builder.Services.AddDbContext<OrdersDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

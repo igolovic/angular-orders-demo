@@ -3,9 +3,6 @@ using OrdersDemo.Domain.Entities;
 
 namespace OrdersDemo.Infrastructure.Persistence
 {
-    // wie soll ich erste migration aus VS ausfuehren damit ich eine neu-erstellte sql database bekomme, wie konfiguriert
-    // kann die erste migration neue datenbank erstellen, oder muss ich das manuel machen?
-
     public class OrdersDbContext : DbContext
     {
         public OrdersDbContext(DbContextOptions<OrdersDbContext> options) : base(options) { }

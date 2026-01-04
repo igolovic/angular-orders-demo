@@ -46,7 +46,33 @@ namespace OrdersDemo.Infrastructure.Services
                         });
                     }
 
-                    // 2. Resultset: TotalCount
+                    // 2. Resultset: OrderItems
+                    var items = new List<OrderItem>();
+                    if (reader.NextResult())
+                    {
+                        while (reader.Read())
+                        {
+                            items.Add(new OrderItem
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                OrderId = reader.GetInt32(reader.GetOrdinal("OrderId")),
+                                ProductId = reader.GetInt32(reader.GetOrdinal("ProductId")),
+                                Quantity = reader.GetInt32(reader.GetOrdinal("Quantity"))
+                            });
+                        }
+                    }
+
+                    // Map items to orders
+                    var orderLookup = orders.ToDictionary(o => o.Id);
+                    foreach (var item in items)
+                    {
+                        if (orderLookup.TryGetValue(item.OrderId, out var order))
+                        {
+                            order.Items.Add(item);
+                        }
+                    }
+
+                    // 3. Resultset: TotalCount
                     if (reader.NextResult() && reader.Read())
                     {
                         result.TotalCount = reader.GetInt32(0);

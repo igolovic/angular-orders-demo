@@ -11,18 +11,20 @@ namespace OrdersDemo.RestApi.Controllers
     {
         private readonly GetPagedOrdersUseCase getPagedOrdersUseCase;
         private readonly SaveOrderUseCase saveOrderUseCase;
+        private readonly DeleteOrderUseCase deleteOrderUseCase;
 
-        public OrdersController(GetPagedOrdersUseCase getPagedOrdersUseCase, SaveOrderUseCase saveOrderUseCase)
+        public OrdersController(GetPagedOrdersUseCase getPagedOrdersUseCase, SaveOrderUseCase saveOrderUseCase, DeleteOrderUseCase deleteOrderUseCase)
         {
             this.getPagedOrdersUseCase = getPagedOrdersUseCase;
             this.saveOrderUseCase = saveOrderUseCase;
+            this.deleteOrderUseCase = deleteOrderUseCase;
         }
 
         // GET: api/<OrdersController>
 
         [HttpGet]
         public ActionResult<PagedOrdersResultDto> Get(
-            [FromQuery] string filter,
+            [FromQuery] string? filter,
             [FromQuery] int offset,
             [FromQuery] int pageSize,
             [FromQuery] string sortColumn = "Id",
@@ -43,6 +45,7 @@ namespace OrdersDemo.RestApi.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            deleteOrderUseCase.Execute(new OrderDto { Id = id });
         }
     }
 }

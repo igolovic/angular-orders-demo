@@ -1,4 +1,6 @@
-﻿using OrdersDemo.Domain.Interfaces;
+﻿using OrdersDemo.Application.DTOs;
+using OrdersDemo.Domain.Entities;
+using OrdersDemo.Domain.Interfaces;
 
 namespace OrdersDemo.Application.UseCases
 {
@@ -11,9 +13,9 @@ namespace OrdersDemo.Application.UseCases
             this.orderRepository = orderRepository;
         }
 
-        public void Execute(int orderId)
+        public void Execute(OrderDto orderDto)
         {
-            orderRepository.DeleteOrder(orderId);
+            orderRepository.DeleteOrder((Order)orderDto);
         }
     }
 }
