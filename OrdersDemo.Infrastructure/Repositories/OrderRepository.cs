@@ -16,7 +16,11 @@ namespace OrdersDemo.Infrastructure
 
         public void DeleteOrder(Order order)
         {
+            var tracked = context.Orders.Find(order.Id);
+            if (tracked == null) return;
+
             context.Remove(order);
+            context.SaveChanges();
         }
 
         public Order SaveOrder(Order order)
